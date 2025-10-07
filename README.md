@@ -432,6 +432,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by [Michael D. Bullet](https://github.com/bulletdev)**
+**Made with  💎♦️ by [Michael D. Bullet](https://github.com/bulletdev)**
 
 ⭐ Star this repo if you find it useful!
