@@ -1,0 +1,36 @@
+# GitFollow Configuration File (Optional)
+# Copy this file to ~/.gitfollow.yml or .gitfollow.yml in your project
+
+# Custom data directory for storing snapshots and history
+data_dir: ~/.gitfollow
+
+# Default repository for GitHub issue notifications
+# Format: owner/repo
+notify_repo: yourusername/yourrepo
+
+# Output preferences
+output:
+  # Use colored output in terminal
+  colorize: true
+
+  # Default format: text, table, or json
+  format: text
+
+  # Quiet mode: suppress output when no changes detected
+  quiet: false
+
+# Report preferences
+report:
+  # Default report format: text or markdown
+  format: markdown
+
+  # Maximum number of recent activities to show
+  recent_limit: 20
+
+# Export preferences
+export:
+  # Default export format: json or csv
+  format: json
+
+  # Default export directory
+  directory: ./exports
