@@ -1,11 +1,10 @@
 # GitFollow
 
+[![Gem Version](https://img.shields.io/gem/v/gitfollow?logo=ruby&color=CC342D)](https://rubygems.org/gems/gitfollow)
+[![Daily Follower Check](https://github.com/Bulletdev/GitFollow/actions/workflows/daily-check.yml/badge.svg)](https://github.com/Bulletdev/GitFollow/actions/workflows/daily-check.yml)
 [![CI](https://github.com/bulletdev/gitfollow/workflows/CI/badge.svg)](https://github.com/bulletdev/gitfollow/actions)
-[![Ruby Version](https://img.shields.io/badge/ruby-%3E%3D%203.0-ruby.svg)](https://www.ruby-lang.org)
-[![Gem Version](https://badge.fury.io/rb/gitfollow.svg)](https://badge.fury.io/rb/gitfollow)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![codecov](https://codecov.io/gh/bulletdev/gitfollow/branch/main/graph/badge.svg)](https://codecov.io/gh/bulletdev/gitfollow)
-[![Gem Version](https://img.shields.io/gem/v/gitfollow?logo=ruby&color=CC342D)](https://rubygems.org/gems/gitfollow)
 
 **GitFollow** is a powerful CLI tool to track your GitHub followers and unfollows with ease. Get notified when someone follows or unfollows you, generate detailed reports, and automate your follower monitoring with GitHub Actions.
 
