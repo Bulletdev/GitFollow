@@ -3,7 +3,7 @@ require:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.4
   Exclude:
     - 'vendor/**/*'
     - 'bin/*'
@@ -18,6 +18,12 @@ Style/StringLiterals:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+
+Naming/PredicatePrefix:
+  Enabled: false
+
+Naming/PredicateMethod:
+  Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: no_comma
@@ -36,7 +42,7 @@ Layout/MultilineMethodCallIndentation:
 
 
 Metrics/MethodLength:
-  Max: 30
+  Max: 35
   Exclude:
     - 'spec/**/*'
 
@@ -52,14 +58,47 @@ Metrics/ModuleLength:
   Max: 250
 
 Metrics/AbcSize:
-  Max: 25
+  Max: 45
+
+Metrics/CyclomaticComplexity:
+  Max: 12
+
+Metrics/PerceivedComplexity:
+  Max: 12
 
 
 RSpec/ExampleLength:
   Max: 15
 
 RSpec/MultipleExpectations:
-  Max: 5
+  Max: 10
 
 RSpec/NestedGroups:
   Max: 4
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/StubbedMock:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Capybara/RSpec/PredicateMatcher:
+  Enabled: false

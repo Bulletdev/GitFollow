@@ -9,7 +9,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['contato@michaelbullet.com']
 
   spec.summary       = 'Track GitHub followers and unfollows with ease'
-  spec.description   = 'A CLI tool to monitor your GitHub followers, detect new followers and unfollows, and generate detailed reports with automated notifications.'
+  spec.description   = 'A CLI tool to monitor your GitHub followers, detect new followers and unfollows, ' \
+                       'and generate detailed reports with automated notifications.'
   spec.homepage      = 'https://github.com/bulletdev/gitfollow'
   spec.license       = 'MIT'
   spec.required_ruby_version = '>= 3.4.5'
