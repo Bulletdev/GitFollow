@@ -6,13 +6,13 @@ Gem::Specification.new do |spec|
   spec.name          = 'gitfollow'
   spec.version       = GitFollow::VERSION
   spec.authors       = ['Michael D. Bullet']
-  spec.email         = ['your.email@example.com']
+  spec.email         = ['contato@michaelbullet.com']
 
   spec.summary       = 'Track GitHub followers and unfollows with ease'
   spec.description   = 'A CLI tool to monitor your GitHub followers, detect new followers and unfollows, and generate detailed reports with automated notifications.'
   spec.homepage      = 'https://github.com/bulletdev/gitfollow'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '>= 3.0.0'
+  spec.required_ruby_version = '>= 3.4.5'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = "#{spec.homepage}.git"
