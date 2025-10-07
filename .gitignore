@@ -1,0 +1,53 @@
+# Ruby
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+
+# Documentation
+/doc/
+/rdoc/
+/.yardoc
+/_yardoc/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Bundler
+/.bundle/
+/vendor/bundle
+Gemfile.lock
+
+# RSpec
+spec/examples.txt
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# GitFollow data
+.gitfollow/
+
+# SimpleCov
+coverage/
+
+# Rubocop
+.rubocop-https*
+
+# VCR cassettes (optional, uncomment if you don't want to commit them)
+# spec/fixtures/vcr_cassettes/
+COMMIT_GUIDE.md
+QUICK_START.md
