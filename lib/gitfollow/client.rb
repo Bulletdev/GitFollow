@@ -7,7 +7,9 @@ module GitFollow
     attr_reader :username, :client
 
     def initialize(token:, username: nil)
-      raise ArgumentError, 'GitHub token is required' if token.nil? || token.empty?
+      if token.nil? || token.empty? || token.strip.empty?
+        raise ArgumentError, 'GitHub token is required and cannot be empty'
+      end
 
       @client = Octokit::Client.new(access_token: token)
       @client.auto_paginate = true

@@ -27,10 +27,10 @@ module GitFollow
         spinner.success('Done!')
 
         puts "\nInitialization complete!"
-        puts "Username: @#{snapshot[:username]}"
-        puts "Followers: #{snapshot[:stats][:followers_count]}"
-        puts "Following: #{snapshot[:stats][:following_count]}"
-        puts "Mutual: #{snapshot[:stats][:mutual_count]}"
+        puts "Username: @#{snapshot['username']}"
+        puts "Followers: #{snapshot['stats']['followers_count']}"
+        puts "Following: #{snapshot['stats']['following_count']}"
+        puts "Mutual: #{snapshot['stats']['mutual_count']}"
         puts "\nRun 'gitfollow check' to detect changes."
       rescue StandardError => e
         spinner.error("Failed: #{e.message}")
@@ -224,9 +224,10 @@ module GitFollow
     def setup_components
       token = options[:token] || ENV.fetch('OCTOCAT_TOKEN', nil)
 
-      if token.nil? || token.empty?
-        puts 'Error: GitHub token not provided.'
+      if token.nil? || token.empty? || token.strip.empty?
+        puts 'Error: GitHub token not provided or is empty.'
         puts 'Set OCTOCAT_TOKEN environment variable or use --token option.'
+        puts 'Get a token at: https://github.com/settings/tokens'
         exit 1
       end
 
@@ -234,7 +235,9 @@ module GitFollow
         @client = GitFollow::Client.new(token: token)
 
         unless @client.valid_token?
-          puts 'Error: Invalid GitHub token.'
+          puts 'Error: Invalid GitHub token or insufficient permissions.'
+          puts 'Ensure your token has the following scopes: read:user, user:follow'
+          puts 'Generate a new token at: https://github.com/settings/tokens'
           exit 1
         end
 

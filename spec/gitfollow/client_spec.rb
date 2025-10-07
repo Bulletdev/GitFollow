@@ -8,11 +8,11 @@ RSpec.describe GitFollow::Client do
 
   describe '#initialize' do
     it 'raises error when token is nil' do
-      expect { described_class.new(token: nil) }.to raise_error(ArgumentError, 'GitHub token is required')
+      expect { described_class.new(token: nil) }.to raise_error(ArgumentError, 'GitHub token is required and cannot be empty')
     end
 
     it 'raises error when token is empty' do
-      expect { described_class.new(token: '') }.to raise_error(ArgumentError, 'GitHub token is required')
+      expect { described_class.new(token: '') }.to raise_error(ArgumentError, 'GitHub token is required and cannot be empty')
     end
 
     it 'initializes with valid token' do
