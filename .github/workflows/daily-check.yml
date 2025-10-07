@@ -1,0 +1,85 @@
+name: Daily Follower Check
+
+on:
+  schedule:
+    # Run daily at 9:00 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  check-followers:
+    name: Check for Follower Changes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Install gem locally
+        run: |
+          gem build gitfollow.gemspec
+          gem install ./gitfollow-*.gem
+
+      - name: Cache follower data
+        uses: actions/cache@v4
+        with:
+          path: ~/.gitfollow
+          key: gitfollow-data-${{ github.repository_owner }}
+
+      - name: Initialize if first run
+        env:
+          OCTOCAT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f ~/.gitfollow/snapshots.json ]; then
+            echo "First run - initializing..."
+            gitfollow init
+          fi
+
+      - name: Check for changes
+        id: check
+        env:
+          OCTOCAT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          OUTPUT=$(gitfollow check --json 2>&1)
+          echo "$OUTPUT"
+          echo "output<<EOF" >> $GITHUB_OUTPUT
+          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          # Check if there are changes
+          if echo "$OUTPUT" | jq -e '.has_changes == true' > /dev/null 2>&1; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue if changes detected
+        if: steps.check.outputs.has_changes == 'true'
+        env:
+          OCTOCAT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          gitfollow check --notify="$REPO" --quiet
+
+      - name: Generate and upload report
+        if: always()
+        env:
+          OCTOCAT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gitfollow report --format=markdown --output=follower-report.md
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: follower-report-${{ github.run_number }}
+          path: follower-report.md
