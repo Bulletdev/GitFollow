@@ -40,7 +40,7 @@ jobs:
 
       - name: Initialize if first run
         env:
-          OCTOCAT_TOKEN: ${{ secrets.GITHUB_PAT }}  # <-- Changed here
+          OCTOCAT_TOKEN: ${{ secrets.OCTOCAT_TOKEN }}
         run: |
           if [ ! -f ~/.gitfollow/snapshots.json ]; then
             echo "First run - initializing..."
@@ -50,14 +50,13 @@ jobs:
       - name: Check for changes
         id: check
         env:
-          OCTOCAT_TOKEN: ${{ secrets.GITHUB_PAT }}  # <-- Changed here
+          OCTOCAT_TOKEN: ${{ secrets.OCTOCAT_TOKEN }}
         run: |
           OUTPUT=$(gitfollow check --json 2>&1)
           echo "$OUTPUT"
           echo "output<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          # Check if there are changes
           if echo "$OUTPUT" | jq -e '.has_changes == true' > /dev/null 2>&1; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
@@ -75,7 +74,7 @@ jobs:
       - name: Generate and upload report
         if: always()
         env:
-          OCTOCAT_TOKEN: ${{ secrets.GITHUB_PAT }}  # <-- Changed here
+          OCTOCAT_TOKEN: ${{ secrets.OCTOCAT_TOKEN }}
         run: |
           gitfollow report --format=markdown --output=follower-report.md
 
