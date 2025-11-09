@@ -46,13 +46,16 @@ jobs:
             echo "First run - initializing..."
             gitfollow init
           fi
-
-      - name: Check for changes
+          
+      - name: Check for changes and create issue if detected
         id: check
         env:
           OCTOCAT_TOKEN: ${{ secrets.OCTOCAT_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          OUTPUT=$(gitfollow check --json 2>&1)
+          OUTPUT=$(gitfollow check --notify="$REPO" --quiet --json 2>&1)
+          echo "$OUTPUT"
+          # Optionally set outputs if needed, e.g., for downstream steps
           echo "$OUTPUT"
           echo "output<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT
