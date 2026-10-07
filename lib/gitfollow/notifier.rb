@@ -9,9 +9,9 @@ module GitFollow
       @username = client.username
     end
 
-    def notify_via_issue(repo:, changes:)
+    def notify_via_issue(repo:, changes:, history: [])
       title = generate_issue_title(changes)
-      body = generate_issue_body(changes)
+      body = generate_issue_body(changes, history)
 
       @client.create_issue(repo: repo, title: title, body: body)
     end
@@ -41,7 +41,7 @@ module GitFollow
       end
 
       output << "Net change: #{format_net_change(changes[:net_change], colorize)}"
-      output << "Previous: #{changes[:previous_count]} → Current: #{changes[:current_count]}"
+      output << "Previous: #{changes[:previous_count]} -> Current: #{changes[:current_count]}"
 
       output.join("\n")
     end
@@ -103,38 +103,24 @@ module GitFollow
       "GitFollow: #{parts.join(', ')} - #{Time.now.strftime('%Y-%m-%d')}"
     end
 
-    def generate_issue_body(changes)
+    def generate_issue_body(changes, history = [])
       body = []
       body << "# Follower Changes for @#{@username}"
       body << ''
       body << "**Date:** #{Time.now.strftime('%Y-%m-%d %H:%M:%S UTC')}"
       body << ''
 
-      if changes[:new_followers].any?
-        body << "## ✅ New Followers (#{changes[:new_followers].size})"
-        body << ''
-        changes[:new_followers].each do |user|
-          login = user['login'] || user[:login]
-          body << "- [@#{login}](https://github.com/#{login})"
-        end
-        body << ''
-      end
-
-      if changes[:unfollowed].any?
-        body << "## ❌ Unfollowed (#{changes[:unfollowed].size})"
-        body << ''
-        changes[:unfollowed].each do |user|
-          login = user['login'] || user[:login]
-          body << "- [@#{login}](https://github.com/#{login})"
-        end
-        body << ''
-      end
+      append_new_followers(body, changes[:new_followers])
+      append_unfollowed(body, changes[:unfollowed])
 
       body << '## Summary'
       body << ''
       body << "- **Previous Count:** #{changes[:previous_count]}"
       body << "- **Current Count:** #{changes[:current_count]}"
       body << "- **Net Change:** #{format_net_change(changes[:net_change], false)}"
+
+      append_history(body, history) unless history.empty?
+
       body << ''
       body << '---'
       body << '_Automated notification from [GitFollow](https://github.com/bulletdev/gitfollow)_'
@@ -142,8 +128,46 @@ module GitFollow
       body.join("\n")
     end
 
+    def append_new_followers(body, new_followers)
+      return unless new_followers.any?
+
+      body << "## New Followers (#{new_followers.size})"
+      body << ''
+      new_followers.each do |user|
+        login = user['login'] || user[:login]
+        body << "- [@#{login}](https://github.com/#{login})"
+      end
+      body << ''
+    end
+
+    def append_unfollowed(body, unfollowed)
+      return unless unfollowed.any?
+
+      body << "## Unfollowed (#{unfollowed.size})"
+      body << ''
+      unfollowed.each do |user|
+        login = user['login'] || user[:login]
+        body << "- [@#{login}](https://github.com/#{login})"
+      end
+      body << ''
+    end
+
+    def append_history(body, history)
+      body << ''
+      body << '## Last 7 Days Activity'
+      body << ''
+      body << '| Date | Event | User |'
+      body << '|------|-------|------|'
+      history.each do |entry|
+        date = Time.parse(entry['timestamp']).strftime('%Y-%m-%d')
+        event = entry['event_type'] == 'new_follower' ? 'New Follower' : 'Unfollowed'
+        login = entry['user']['login'] || entry['user'][:login]
+        body << "| #{date} | #{event} | [@#{login}](https://github.com/#{login}) |"
+      end
+    end
+
     def format_new_followers(new_followers, colorize)
-      header = "✅ New Followers (#{new_followers.size}):"
+      header = "+ New Followers (#{new_followers.size}):"
 
       if colorize
         require 'colorize'
@@ -152,14 +176,14 @@ module GitFollow
 
       lines = [header]
       new_followers.each do |user|
-        lines << "  • @#{user['login'] || user[:login]}"
+        lines << "  * @#{user['login'] || user[:login]}"
       end
 
       lines.join("\n")
     end
 
     def format_unfollowed(unfollowed, colorize)
-      header = "❌ Unfollowed (#{unfollowed.size}):"
+      header = "- Unfollowed (#{unfollowed.size}):"
 
       if colorize
         require 'colorize'
@@ -168,7 +192,7 @@ module GitFollow
 
       lines = [header]
       unfollowed.each do |user|
-        lines << "  • @#{user['login'] || user[:login]}"
+        lines << "  * @#{user['login'] || user[:login]}"
       end
 
       lines.join("\n")

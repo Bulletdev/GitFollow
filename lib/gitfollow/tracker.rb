@@ -187,7 +187,7 @@ module GitFollow
 
         history.reverse.each do |entry|
           timestamp = Time.parse(entry['timestamp']).strftime('%Y-%m-%d %H:%M')
-          event = entry['event_type'] == 'new_follower' ? '✅ New Follower' : '❌ Unfollowed'
+          event = entry['event_type'] == 'new_follower' ? 'New Follower' : 'Unfollowed'
           user = "@#{entry['user']['login']}"
 
           report << "| #{timestamp} | #{event} | #{user} |"
@@ -224,7 +224,7 @@ module GitFollow
       else
         history.reverse.each do |entry|
           timestamp = Time.parse(entry['timestamp']).strftime('%Y-%m-%d %H:%M')
-          event = entry['event_type'] == 'new_follower' ? '✅ NEW' : '❌ UNFOLLOW'
+          event = entry['event_type'] == 'new_follower' ? 'NEW' : 'UNFOLLOW'
           user = "@#{entry['user']['login']}"
 
           report << "  [#{timestamp}] #{event} #{user}"

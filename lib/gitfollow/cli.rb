@@ -291,7 +291,12 @@ module GitFollow
       spinner.auto_spin
 
       begin
-        issue = @notifier.notify_via_issue(repo: options[:notify], changes: changes)
+        seven_days_ago = Time.now - (7 * 24 * 60 * 60)
+        history = @storage.get_history(@client.username).select do |e|
+          Time.parse(e['timestamp']) > seven_days_ago
+        end
+
+        issue = @notifier.notify_via_issue(repo: options[:notify], changes: changes, history: history)
         spinner.success("Issue created: #{issue[:url]}")
       rescue StandardError => e
         spinner.error("Failed to create issue: #{e.message}")
