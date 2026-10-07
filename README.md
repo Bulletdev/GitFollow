@@ -99,12 +99,47 @@ Previous: 542 -> Current: 543
 gitfollow stats
 ```
 
+```
+Follower Statistics for @yourname
+==================================================
+┌──────────────────────┬─────┐
+│ Followers            │ 543 │
+│ Following            │ 123 │
+│ Mutual               │  89 │
+│ Ratio                │4.41 │
+│ Total New Followers  │  15 │
+│ Total Unfollows      │   3 │
+└──────────────────────┴─────┘
+
+Last Updated: 2026-10-07 09:00:00 UTC
+```
+
 ### Reports
 
 ```bash
 gitfollow report
 gitfollow report --format=markdown
 gitfollow report --format=markdown --output=report.md
+```
+
+```
+GitFollow Report for @yourname
+==================================================
+
+Last Updated: 2026-10-07 09:00:00 UTC
+
+Statistics:
+  Followers:         543
+  Following:         123
+  Mutual:             89
+  Ratio:            4.41
+  Total New:          15
+  Total Unfollows:     3
+
+Recent Activity:
+--------------------------------------------------
+  [2026-10-07 09:00] NEW @newuser1
+  [2026-10-06 09:00] UNFOLLOW @olduser
 ```
 
 ### Mutual Followers and Non-Followers
