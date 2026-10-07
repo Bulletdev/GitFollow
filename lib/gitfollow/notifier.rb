@@ -56,7 +56,7 @@ module GitFollow
       if changes[:new_followers].any?
         new_followers_table = TTY::Table.new(
           header: ['New Followers', 'GitHub ID'],
-          rows: changes[:new_followers].map { |u| ["@#{u[:login]}", u[:id]] }
+          rows: changes[:new_followers].map { |u| ["@#{u['login'] || u[:login]}", u['id'] || u[:id]] }
         )
         output << new_followers_table.render(:unicode, padding: [0, 1])
       end
@@ -64,7 +64,7 @@ module GitFollow
       if changes[:unfollowed].any?
         unfollowed_table = TTY::Table.new(
           header: ['Unfollowed', 'GitHub ID'],
-          rows: changes[:unfollowed].map { |u| ["@#{u[:login]}", u[:id]] }
+          rows: changes[:unfollowed].map { |u| ["@#{u['login'] || u[:login]}", u['id'] || u[:id]] }
         )
         output << unfollowed_table.render(:unicode, padding: [0, 1])
       end
@@ -114,7 +114,8 @@ module GitFollow
         body << "## ✅ New Followers (#{changes[:new_followers].size})"
         body << ''
         changes[:new_followers].each do |user|
-          body << "- [@#{user[:login]}](https://github.com/#{user[:login]})"
+          login = user['login'] || user[:login]
+          body << "- [@#{login}](https://github.com/#{login})"
         end
         body << ''
       end
@@ -123,7 +124,8 @@ module GitFollow
         body << "## ❌ Unfollowed (#{changes[:unfollowed].size})"
         body << ''
         changes[:unfollowed].each do |user|
-          body << "- [@#{user[:login]}](https://github.com/#{user[:login]})"
+          login = user['login'] || user[:login]
+          body << "- [@#{login}](https://github.com/#{login})"
         end
         body << ''
       end
@@ -150,7 +152,7 @@ module GitFollow
 
       lines = [header]
       new_followers.each do |user|
-        lines << "  • @#{user[:login]}"
+        lines << "  • @#{user['login'] || user[:login]}"
       end
 
       lines.join("\n")
@@ -166,7 +168,7 @@ module GitFollow
 
       lines = [header]
       unfollowed.each do |user|
-        lines << "  • @#{user[:login]}"
+        lines << "  • @#{user['login'] || user[:login]}"
       end
 
       lines.join("\n")
